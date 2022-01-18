@@ -27,7 +27,7 @@ default_swap_size="12Gb"          #Swap size
 default_root_size="100%FREE"			#100% of the available disk space will be used by LCM
 keyfile_to_boot="FALSE"
 default_boot_size="1024M"         #size of /boot
-default_grub_size="10M"           #size of bios boot partition
+default_grub_size="128M"           #size of bios boot partition
 default_efi_size="256M"           #size of EFI partition
 crypt_pw=""
 
@@ -129,9 +129,9 @@ do
 		#deleting all partitions
 		sgdisk --zap-all $DEV
 		#making partitions
-		sgdisk --new=1:0:+512M $DEV
-		sgdisk --new=2:0:+128M $DEV
-		sgdisk --new=3:0:+128M $DEV
+		sgdisk --new=1:0:+$default_boot_size $DEV
+		sgdisk --new=2:0:+$default_grub_size $DEV
+		sgdisk --new=3:0:+$default_efi_size $DEV
 		sgdisk --new=5:0:0 $DEV
 		sgdisk --typecode=1:8301 --typecode=2:ef02 --typecode=3:ef00 --typecode=5:8301 $DEV
 		sgdisk --change-name=1:/boot --change-name=2:GRUB --change-name=3:EFI-SP --change-name=5:rootfs $DEV
